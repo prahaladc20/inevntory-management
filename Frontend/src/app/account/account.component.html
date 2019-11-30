@@ -1,0 +1,31 @@
+<div class="container">
+<div class="row" > 
+    <div class="col-sm-12" style="margin: 25px;">
+    <h2 class="textcenter" align="center">Login</h2>
+    <br/>
+ 
+      <div class="form-group-half">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="text" placeholder="Enter username" name="user" [(ngModel)]="user.username">
+ 
+      </div>
+      <div class="form-group">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd" [(ngModel)]="user.password">
+
+      </div>
+     
+      <button (click)="login()" class="btn btn-primary">Log In</button>
+
+
+    </div>
+
+    <div class="row" >
+    <!-- <div class="col-sm-12">You are logged in as {{ _accountService.username }}.<br />
+        Token Expires: {{ _accountService.token_expires }}<br />
+        <button (click)="refreshToken()" class="btn btn-primary">Refresh Token</button>&nbsp;
+        <button (click)="logout()" class="btn btn-primary">Log Out</button>&nbsp;
+    </div> -->
+    </div>
+</div>
+</div>
