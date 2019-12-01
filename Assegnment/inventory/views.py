@@ -59,11 +59,11 @@ class InventoryList(APIView):
 	def get(self, request, format=None):
 		print("lllllllllllllllllllllllll",request.user.groups.values_list('name',flat = True))
 
-		if (request.user.groups.filter(name = 'Store Manager').exists()) or (request.user.groups.filter(name = 'Store Assistant').exists() and request.user.groups.filter(name = 'Store Manager').exists()):
-			result = Inventory.objects.filter(status=0)
-		else:
-			result = Inventory.objects.filter(status=1)
-
+		# if (request.user.groups.filter(name = 'Store Manager').exists()) or (request.user.groups.filter(name = 'Store Assistant').exists() and request.user.groups.filter(name = 'Store Manager').exists()):
+		# 	result = Inventory.objects.filter(status=0)
+		# else:
+		# 	result = Inventory.objects.filter(status=1)
+		result = Inventory.objects.all()
 		print(result)
 		# serializer_class = serializers.InventorySerializer
 		serializers = InventorySerializer(result,many=True)
@@ -73,6 +73,12 @@ class InventoryList(APIView):
 	def post(self,request,format=None):
 		print("lllllllllllllllllllllllll+++",request.data)
 
+		if (request.user.groups.filter(name = 'Store Manager').exists()) or (request.user.groups.filter(name = 'Store Assistant').exists() and request.user.groups.filter(name = 'Store Manager').exists()):
+			request.data['status'] = 1
+			print("LLLLLLLLLL",request.data)
+			
+		else:
+			request.data['status'] = 0
 		serializer = InventorySerializer(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
@@ -114,6 +120,10 @@ class InventoryDetail(APIView):
 
 	def put(self, request, pk, format=None):
 		snippet = self.get_object(pk)
+		if (request.user.groups.filter(name = 'Store Manager').exists()) or (request.user.groups.filter(name = 'Store Assistant').exists() and request.user.groups.filter(name = 'Store Manager').exists()):
+			request.data['status'] = 1
+		else:
+			request.data['status'] = 0
 		serializer = InventorySerializer(snippet, data=request.data)
 		if serializer.is_valid():
 			serializer.save()

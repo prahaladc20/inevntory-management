@@ -26,7 +26,7 @@ export class ApiService {
 			batch_num:inventoty.batch_num,
 			batch_date:inventoty.batch_date,
 			quantity:inventoty.quantity,
-			status:inventoty.status	
+			// status:inventoty.status	
 		}
 		// alert(listing.product_name)
 		return this.http.post(this.API_URL + '/get/',listing,

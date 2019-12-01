@@ -44,6 +44,7 @@ export class InventryListComponent implements OnInit {
 		alert("hello")
 		this.api.createInventory(this.new_invt).subscribe(
 			data => {
+				this.getProductes();
 				alert(this.new_invt)
 			},
 		error => {
