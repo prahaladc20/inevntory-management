@@ -1,38 +1,24 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../_service/api.service';
-import {error} from 'util';
-import {AccountService} from '../_service/account.service';
-import {Router} from '@angular/router';
-import {Inventory} from '../inventory';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Inventory} from "../inventory";
+import {ApiService} from "../_service/api.service";
+import {AccountService} from "../_service/account.service";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-inventry-list',
-  templateUrl: './inventry-list.component.html',
-  styleUrls: ['./inventry-list.component.css'],
-  providers: [ApiService]
+  selector: 'app-inventory',
+  templateUrl: './inventory.component.html',
+  styleUrls: ['./inventory.component.css']
 })
-export class InventryListComponent implements OnInit {
-
-  tempInventory: Inventory = null;
+export class InventoryComponent implements OnInit {
   selectedInventory: Inventory = null;
   inventories: Inventory[] = [
     {
       batch_date: '2019-11-24',
-      status: 'Pending',
+      status: 'Approved',
       batch_num: 1,
       mrp: 1,
       product_id: ' 1',
       product_name: 'string',
-      quantity: 1,
-      vendor: 'string',
-    }, {
-      batch_date: '2019-11-24',
-      status: 'Pending',
-      batch_num: 1,
-      mrp: 1,
-      product_id: ' 2',
-      product_name: 'string111',
       quantity: 1,
       vendor: 'string',
     }
@@ -41,7 +27,6 @@ export class InventryListComponent implements OnInit {
   ];
   userDisplayName = '';
   createForm: FormGroup;
-  editForm: FormGroup;
 
   constructor(private api: ApiService, private accountService: AccountService) {
     this.createForm = new FormGroup({
@@ -66,7 +51,7 @@ export class InventryListComponent implements OnInit {
   // }
 
   getProductes = () => {
-    this.api.getAllProductes().subscribe(
+    this.api.getApprovedProducts().subscribe(
       (data: Inventory[]) => {
         this.inventories = data;
         // console.log(data)
@@ -103,18 +88,6 @@ export class InventryListComponent implements OnInit {
     );
   };
 
-
-  approveInventory = () => {
-    this.updateInventory();
-    this.selectedInventory.status = 'Approved';
-  }
-
-  rejectInventory = () => {
-    this.updateInventory();
-    this.selectedInventory.status = 'Rejected';
-  }
-
-
   selectInventory = (inventoryId) => {
     this.selectedInventory = this.inventories.find((inventory) => {
       return inventory.product_id === inventoryId;
@@ -136,4 +109,6 @@ export class InventryListComponent implements OnInit {
       }
     );
   }
+
+
 }

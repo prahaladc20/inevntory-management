@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Inventory} from "../inventry-list/inventory";
+import {Inventory} from "../inventory";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,11 @@ export class ApiService {
       {headers: this.httpHeaders});
   }
 
+  getApprovedProducts(): Observable<any> {
+    return this.http.get(this.API_URL + '/get-approved/',
+      {headers: this.httpHeaders});
+  }
+
   createInventory(inventoty): Observable<any> {
     const listing = {
       author: 1,
@@ -30,7 +35,7 @@ export class ApiService {
       batch_num: inventoty.batch_num,
       batch_date: inventoty.batch_date,
       quantity: inventoty.quantity,
-    //   status: inventoty.status
+      //   status: inventoty.status
     }
     // alert(listing.product_name)
     return this.http.post(this.API_URL + '/get/', listing,
@@ -38,9 +43,15 @@ export class ApiService {
   }
 
   updateInventory(inventory: Inventory): Observable<any> {
-	// alert(listing.product_name)
-	console.log(inventory,"UPDATE")
-    return this.http.put(this.API_URL + '/get/' + inventory['product_id'] + '/',inventory,
+    // alert(listing.product_name)
+    console.log(inventory, "UPDATE")
+    return this.http.put(this.API_URL + '/get/' + inventory['product_id'] + '/', inventory,
+      {headers: this.httpHeaders});
+  }
+
+  approveOrReject(inventory: Inventory): Observable<any> {
+    // alert(listing.product_name)
+    return this.http.put(this.API_URL + '/get/' + inventory['product_id'] + '/', inventory,
       {headers: this.httpHeaders});
   }
 

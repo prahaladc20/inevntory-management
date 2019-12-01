@@ -8,6 +8,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountComponent } from './account/account.component';
 import { Interceptor } from './_helper/interceptor';
+import { InventoryComponent } from './inventory/inventory.component';
 
 
 
@@ -17,6 +18,7 @@ import { Interceptor } from './_helper/interceptor';
     AppComponent,
     InventryListComponent,
     AccountComponent,
+    InventoryComponent,
   ],
   imports: [
     BrowserModule,

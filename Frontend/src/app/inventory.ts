@@ -6,5 +6,5 @@ export interface Inventory {
   batch_num: number;
   batch_date: string;
   quantity: number;
-  approved: boolean;
-}
+  status: string;
+};
