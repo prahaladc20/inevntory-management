@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import status
+from django.http import Http404
 
 from rest_framework.views import APIView
 from rest_framework import viewsets, permissions
@@ -57,6 +58,7 @@ class InventoryList(APIView):
 
 	@csrf_exempt
 	def get(self, request, format=None):
+		print("feth data",request.data)
 		print("lllllllllllllllllllllllll",request.user.groups.values_list('name',flat = True))
 
 		# if (request.user.groups.filter(name = 'Store Manager').exists()) or (request.user.groups.filter(name = 'Store Assistant').exists() and request.user.groups.filter(name = 'Store Manager').exists()):
@@ -88,7 +90,7 @@ class InventoryList(APIView):
 
 
 class InventoryDetail(APIView):
-	print("lllllllllllllllllllllllll")
+	print("UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEe")
 	# queryset = Inventory.objects.all()
 	# serializer_class = InventorySerializer
 
@@ -100,25 +102,26 @@ class InventoryDetail(APIView):
 			raise Http404
 
 
-	def get(self, request, pk, format=None):
-		print("lllllllllllllllllllllllll")
-		result = Inventory.objects.all()
-		print(result)
-		# serializer_class = serializers.InventorySerializer
-		serializers = InventorySerializer(result,many=True)
+	# def get(self, request, pk, format=None):
+	# 	print("lllllllllllllllllllllllll")
+	# 	result = Inventory.objects.all()
+	# 	print(result)
+	# 	# serializer_class = serializers.InventorySerializer
+	# 	serializers = InventorySerializer(result,many=True)
 
-		return Response(serializers.data)	
+	# 	return Response(serializers.data)	
 
-	def post(self,request,*args,**kwargs):
-		print("lllllllllllllllllllllllll+++",request.data)
+	# def post(self,request,*args,**kwargs):
+	# 	print("lllllllllllllllllllllllll+++",request.data)
 
-		serializer = InventorySerializer(data=request.data)
-		if serializer.is_valid():
-			serializer.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	# 	serializer = InventorySerializer(data=request.data)
+	# 	if serializer.is_valid():
+	# 		serializer.save()
+	# 		return Response(serializer.data, status=status.HTTP_201_CREATED)
+	# 	return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def put(self, request, pk, format=None):
+		print("calling update",request.data)
 		snippet = self.get_object(pk)
 		if (request.user.groups.filter(name = 'Store Manager').exists()) or (request.user.groups.filter(name = 'Store Assistant').exists() and request.user.groups.filter(name = 'Store Manager').exists()):
 			request.data['status'] = 1
