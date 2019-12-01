@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../api.service';
+import { ApiService } from '../_service/api.service';
 import { error } from 'util';
-import { AccountService } from '../account.service';
+import { AccountService } from '../_service/account.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -20,13 +20,13 @@ export class InventryListComponent implements OnInit {
   	this.getProductes();
 
 	   }
-	userIsLogged() {
-		if(localStorage.getItem('token')) {
-			return true
-		} else {
-			return false
-		}
-	}
+	// userIsLogged() {
+	// 	if(localStorage.getItem('token')) {
+	// 		return true
+	// 	} else {
+	// 		return false
+	// 	}
+	// }
 
   	getProductes = () => {
   		this.api.getAllProductes().subscribe(

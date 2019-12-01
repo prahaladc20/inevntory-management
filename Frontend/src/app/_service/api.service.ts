@@ -8,8 +8,9 @@ import { Observable } from 'rxjs';
 export class ApiService {
 
 	API_URL = 'http://127.0.0.1:8000';
-	httpHeaders = new HttpHeaders({'Content-Type':'application/json'})
-  	constructor(private http:HttpClient) { }
+	httpHeaders = new HttpHeaders({'Content-Type':'application/json' })
+	  constructor(private http:HttpClient) { }
+	  
 
   	getAllProductes(): Observable<any> {
   	  return this.http.get(this.API_URL + '/get/',
@@ -18,7 +19,7 @@ export class ApiService {
 	
 	createInventory(inventoty): Observable<any> {
 		const listing = {
-			author:'banna',
+			author	:1,
 			product_name:inventoty.product_name,
 			vendor:inventoty.vendor,
 			mrp:inventoty.mrp,
@@ -27,7 +28,7 @@ export class ApiService {
 			quantity:inventoty.quantity,
 			status:inventoty.status	
 		}
-		alert(listing.product_name)
+		// alert(listing.product_name)
 		return this.http.post(this.API_URL + '/get/',listing,
   	  	{headers:this.httpHeaders});
 	}

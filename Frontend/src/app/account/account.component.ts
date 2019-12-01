@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../account.service';
-import { Router } from '@angular/router';
+import { AccountService } from '../_service/account.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account',
@@ -9,40 +11,56 @@ import { Router } from '@angular/router';
   providers:[AccountService]
 })
 export class AccountComponent implements OnInit {
-  public errors: any = [];
-  user;
-  userName;
-  constructor( private router: Router,
+  loginForm: FormGroup;
+  loading = false;
+  submitted = false;
+  returnUrl: string;
+  error = '';
+
+  constructor( 
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
     private accountService: AccountService) { }
 
     _
-  ngOnInit() {
-    this.user = {
-      username: '',
-      password: ''
-    };
-  }
+    ngOnInit() {
+      this.loginForm = this.formBuilder.group({
+        username: ['', Validators.required],
+        password: ['', Validators.required]
+      });
 
-  login(user) {
-    // alert(this.user)
-    this.accountService.login(this.user).subscribe(
-      data => {
-        console.log('login success', data.username);
-        this.userName = this.user.username
-        // this.Token.handle(data.access_token);
-        // this.Auth.changeAuthStatus(true);
-        localStorage.setItem('token',data['token'])
-        localStorage.setItem('userid',this.user.username)
-        
-        sessionStorage.setItem('loggedUser', this.user.username);
-        this.router.navigate(['list']);
-      },
-      err => {
-        console.error('login error', err);
-        this.errors = err['error'];
+      this.accountService.logout();
+  
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    }
+
+    get f() {
+      return this.loginForm.controls;
+    }
+
+    onSubmit() {
+      this.submitted = true;
+
+      // stop here if form is invalid
+      if (this.loginForm.invalid) {
+          return;
       }
-    );
 
+      this.loading = true;
+      this.accountService.authenticate(this.f.username.value, this.f.password.value)
+          .pipe(first())
+          .subscribe(
+              data => {
+                console.log(this.f.username.value,'data')
+                sessionStorage.setItem('loggedUser', this.f.username.value);
+                  this.router.navigate(['list']);
+              },
+              error => {
+                  this.error = error;
+                  this.loading = false;
+              });
   }
+   
 
 }

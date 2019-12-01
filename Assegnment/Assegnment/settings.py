@@ -27,12 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:4200",
-     'http://127.0.0.1:8000',
+   'http://localhost:4201',
+    'http://127.0.0.1:8000',
 ]
 
-
+# response["Access-Control-Allow-Origin"] = 'http://localhost:4201'
+# response["Access-Control-Allow-Methods"] = "GET"
+# response["Access-Control-Allow-Headers"] = 'http://localhost:4201'
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,6 +62,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+   'corsheaders.middleware.CorsPostCsrfMiddleware'
+
 ]
 
 ROOT_URLCONF = 'Assegnment.urls'
@@ -134,9 +140,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
+# AUTH_USER_MODEL = 'inventory.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
          'rest_framework.permissions.IsAuthenticated',
          'rest_framework.permissions.IsAuthenticatedOrReadOnly',
@@ -144,10 +152,9 @@ REST_FRAMEWORK = {
 
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
