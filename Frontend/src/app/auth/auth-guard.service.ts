@@ -8,7 +8,10 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/ro
 export class AuthGuardService {
 
   constructor(public router: Router) { }
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return true;
+
     if (localStorage.getItem('currentUser')) {
         // logged in so return true
         return true;
